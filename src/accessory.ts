@@ -61,7 +61,7 @@ export class HttpEntryAccessory {
         this.informationService = new this.Service.AccessoryInformation()
             .setCharacteristic(
                 this.Characteristic.Manufacturer,
-                'nicinabox'
+                'nicinabox',
             )
             .setCharacteristic(this.Characteristic.Model, 'HttpEntry');
 
@@ -75,7 +75,7 @@ export class HttpEntryAccessory {
                     getState: this.handleGetCurrentDoorState,
                 },
                 this.handleNotification.bind(this),
-                this.handleError.bind(this)
+                this.handleError.bind(this),
             );
         });
     }
@@ -107,7 +107,7 @@ export class HttpEntryAccessory {
         } else {
             this.service.setCharacteristic(
                 this.Characteristic[characteristic],
-                value
+                value,
             );
         }
     }
@@ -120,7 +120,7 @@ export class HttpEntryAccessory {
     async send(config: EndpointRequestConfig) {
         return await got({
             ...this.config.auth,
-            ...config
+            ...config,
         });
     }
 
@@ -137,14 +137,16 @@ export class HttpEntryAccessory {
         } catch (err) {
             return this.handleError(err as Error, callback);
         }
-    }
+    };
 
     handleSetTargetDoorState = async (
         value: CharacteristicValue,
-        callback: CharacteristicSetCallback
+        callback: CharacteristicSetCallback,
     ) => {
         const endpoint = this.getEndpoint(value);
-        if (!endpoint || !endpoint.url) return;
+        if (!endpoint || !endpoint.url) {
+            return;
+        }
 
         try {
             await this.send(endpoint);
@@ -153,7 +155,7 @@ export class HttpEntryAccessory {
         } catch (err) {
             this.handleError(err as Error, callback);
         }
-    }
+    };
 
     getEndpoint(targetState: CharacteristicValue) {
         const { OPEN, CLOSED } = this.Characteristic.TargetDoorState;
