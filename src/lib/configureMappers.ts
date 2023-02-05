@@ -1,7 +1,6 @@
 import mappers, {
     StaticMapperParams,
     RegexMapperParams,
-    XPathMapperParams,
     MapperFunction,
 } from './mappers';
 
@@ -15,15 +14,9 @@ export interface RegexMapperConfig {
     parameters: RegexMapperParams;
 }
 
-export interface XPathMapperConfig {
-    type: 'xpath';
-    parameters: XPathMapperParams;
-}
-
 export type MapperConfig =
     | StaticMapperConfig
-    | RegexMapperConfig
-    | XPathMapperConfig;
+    | RegexMapperConfig;
 
 export default (mapperConfigs: MapperConfig[] = []) => {
     return mapperConfigs.reduce((acc: MapperFunction[], config) => {
@@ -32,8 +25,6 @@ export default (mapperConfigs: MapperConfig[] = []) => {
                 return [...acc, mappers.static(config.parameters)];
             case 'regex':
                 return [...acc, mappers.regex(config.parameters)];
-            case 'xpath':
-                return [...acc, mappers.xpath(config.parameters)];
             default:
                 return acc;
         }

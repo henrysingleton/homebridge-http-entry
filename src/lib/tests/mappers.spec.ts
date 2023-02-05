@@ -22,19 +22,3 @@ describe('regexMapper', () => {
         expect(mapper('The door is currently OPEN, yo!')).toEqual('OPEN');
     });
 });
-
-describe('xpathMapper', () => {
-    it('maps an xpath value to another', () => {
-        const params = {
-            expression: '//partition[3]/text()',
-            index: 0,
-        };
-        const xml = `
-<partition>one</partition>
-<partition>two</partition>
-<partition>OPEN</partition>`;
-
-        const mapper = mappers.xpath(params);
-        expect(mapper(xml)).toEqual('OPEN');
-    });
-});

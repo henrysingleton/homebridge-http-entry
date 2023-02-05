@@ -1,6 +1,3 @@
-import xpath from 'xpath';
-import DOM from 'xmldom';
-
 export type MapperFunction = (value: string) => string | null;
 
 export interface StaticMapperParams {
@@ -12,11 +9,6 @@ export interface StaticMapperParams {
 export interface RegexMapperParams {
     expression: string;
     captureGroup?: number;
-}
-
-export interface XPathMapperParams {
-    expression: string;
-    index?: number;
 }
 
 export const staticMapper = ({
@@ -39,26 +31,7 @@ export const regexMapper = ({
     return '';
 };
 
-export const xpathMapper = ({
-    expression,
-    index = 0,
-}: XPathMapperParams): MapperFunction => (value) => {
-    const document = new DOM.DOMParser().parseFromString(value);
-    const result = xpath.select(expression, document);
-
-    if (typeof result === 'string') {
-        return result;
-    }
-
-    if (Array.isArray(result) && result.length > index) {
-        return (result[index] as Node).nodeValue;
-    }
-
-    return value;
-};
-
 export default {
     static: staticMapper,
     regex: regexMapper,
-    xpath: xpathMapper,
 };
