@@ -100,16 +100,10 @@ export class HttpEntryAccessory {
     }
 
     handleNotification({ characteristic, value }: NotificationPayload) {
-        if (characteristic === 'CurrentDoorState') {
-            this.service
-                .setCharacteristic(this.Characteristic.CurrentDoorState, value)
-                .setCharacteristic(this.Characteristic.TargetDoorState, value);
-        } else {
-            this.service.setCharacteristic(
-                this.Characteristic[characteristic],
-                value,
-            );
-        }
+        this.service.setCharacteristic(
+            this.Characteristic[characteristic],
+            value,
+        );
     }
 
     handleError(err: Error, callback?) {
